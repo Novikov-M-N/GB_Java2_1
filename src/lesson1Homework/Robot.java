@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Класс персонажа "робот"
  */
-public class Robot implements Jumping, Running, Person {
+public class Robot implements Competitor {
     private final String name;
     private final int maxHeight;
     private final int maxDistance;

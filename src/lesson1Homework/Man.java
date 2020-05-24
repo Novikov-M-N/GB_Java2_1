@@ -6,7 +6,7 @@ package lesson1Homework;
 
 import java.util.Random;
 
-public class Man implements Jumping, Running, Person{
+public class Man implements Competitor {
 
     private final String name;
     private final int maxHeight;

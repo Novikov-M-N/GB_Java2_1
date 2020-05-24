@@ -1,6 +1,6 @@
 package lesson1Homework;
 
-public interface Person {
+public interface Competitor extends Jumping, Running{
     void hello();
     String getName();
 }
