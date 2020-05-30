@@ -1,6 +1,6 @@
 package com.geekbrains.java2.lesson3;
 
-import javax.xml.bind.SchemaOutputResolver;
+//import javax.xml.bind.SchemaOutputResolver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;

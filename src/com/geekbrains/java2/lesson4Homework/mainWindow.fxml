@@ -1,0 +1,15 @@
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<VBox fx:controller="com.geekbrains.java2.lesson4Homework.Controller"
+      xmlns:fx="http://javafx.com/fxml" alignment="center">
+    <TextArea fx:id="mainTextArea" VBox.vgrow = "ALWAYS" editable="false"/>
+    <HBox xmlns:fx="http://javafx.com/fxml">
+        <TextField fx:id="messageTextField" HBox.hgrow="ALWAYS" onAction="#sendMessage"/>
+        <Button text = "->" onAction="#sendMessage"/>
+    </HBox>
+
+</VBox>
