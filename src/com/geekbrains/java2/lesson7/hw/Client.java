@@ -1,4 +1,4 @@
-package com.geekbrains.java2.lesson7;
+package com.geekbrains.java2.lesson7.hw;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -13,9 +13,10 @@ public class Client {
 
     static boolean authorized;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        Socket socket = null;
         try {
-            Socket socket = new Socket("localhost", 8189);
+            socket = new Socket("localhost", 8189);
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF("/auth login1 pass1");
@@ -55,6 +56,8 @@ public class Client {
             t.join();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            socket.close();
         }
     }
 
