@@ -3,16 +3,23 @@ package com.geekbrains.java2.lesson8.multiscene;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.net.Socket;
+
+/*Entity for storing scene information*/
+
 public class FxmlInfo {
+    private Socket socket;
     private String resource;
     private SceneFlow sceneFlow;
     private Stage stage;
     private Scene scene;
+    private String nick;
 
-    public FxmlInfo(String resource, SceneFlow sceneFlow, Stage stage) {
+    public FxmlInfo(String resource, SceneFlow sceneFlow, Stage stage, Socket socket) {
         this.resource = resource;
         this.sceneFlow = sceneFlow;
         this.stage = stage;
+        this.socket = socket;
     }
 
     public Scene getScene() {
@@ -40,5 +47,17 @@ public class FxmlInfo {
 
     public boolean hasScene() {
         return scene != null;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
     }
 }

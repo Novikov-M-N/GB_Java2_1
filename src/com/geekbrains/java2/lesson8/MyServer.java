@@ -1,23 +1,29 @@
 package com.geekbrains.java2.lesson8;
 
+import com.geekbrains.java2.lesson8.auth.AuthenticationService;
+import com.geekbrains.java2.lesson8.auth.PlainAuthService;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyServer {
     private final int PORT = 8189;
     private List<ClientHandler> clients;
-    private AuthService authService;
+    private AuthenticationService authService;
 
-    public AuthService getAuthService() {
+    public AuthenticationService getAuthService() {
         return authService;
     }
 
     public MyServer() {
         try (ServerSocket server = new ServerSocket(PORT)) {
-            authService = new AuthService();
+            authService = new PlainAuthService();
             authService.start();
             clients = new ArrayList<>();
             while (true) {
@@ -46,9 +52,10 @@ public class MyServer {
         broadcastClientsList();
     }
 
-    public synchronized void broadcast(String s) {
+    public synchronized void broadcast(String s, boolean addTime) {
+        if (addTime) s += "@" + LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
         for(ClientHandler client: clients) {
-            client.sendMsg(s);
+            client.sendMsg(s );
         }
     }
 
@@ -57,7 +64,7 @@ public class MyServer {
         for (ClientHandler o : clients) {
             sb.append(o.getName() + " ");
         }
-        broadcast(sb.toString());
+        broadcast(sb.toString(), false);
     }
 
     public synchronized boolean isNickLogged(String nick) {
@@ -72,7 +79,8 @@ public class MyServer {
     public void sendDirect(String nick, String message) {
         for (ClientHandler client: clients) {
             if (client.getName().equals(nick)) {
-                client.sendMsg(message);
+                client.sendMsg("(direct) " + message + "@" +
+                        LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
                 return;
             }
         }

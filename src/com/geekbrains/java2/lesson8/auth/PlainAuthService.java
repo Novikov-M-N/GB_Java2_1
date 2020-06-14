@@ -1,9 +1,12 @@
-package com.geekbrains.java2.lesson8;
+package com.geekbrains.java2.lesson8.auth;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthService {
+public class PlainAuthService implements AuthenticationService {
+    Connection conn = null;
+
     private class User {
         private String login;
         private String passwd;
@@ -18,7 +21,7 @@ public class AuthService {
 
     private List<User> userList;
 
-    public AuthService() {
+    public PlainAuthService() {
         userList = new ArrayList<>();
         userList.add(new User("login1", "pass1", "nick1"));
         userList.add(new User("login2", "pass2", "nick2"));

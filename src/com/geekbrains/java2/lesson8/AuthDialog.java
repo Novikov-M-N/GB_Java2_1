@@ -31,22 +31,26 @@ public class AuthDialog implements Stageable {
     PasswordField userPassword;
 
     public void submitUserPassword(ActionEvent actionEvent) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AuthDialog.fxml"));
         try {
-            socket = new Socket("localhost", 8189);
+            socket = ChatSceneApp.getScenes().get(SceneFlow.CHAT).getSocket();
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             String authMessage = "/auth " + userName.getText() + " " + userPassword.getText();
             out.writeUTF(authMessage);
+            while (true) {
+                if(in.available()>0) {
+                    String strFromServer = in.readUTF();
+                    if (strFromServer.startsWith("/authOk")) {
+                        System.out.println("Authorized on server");
+                        ChatSceneApp.getScenes().get(SceneFlow.CHAT).setNick(strFromServer.split("\\s")[1]);
+                        break;
+                    }
+                }
+            }
+            stage.setTitle("Chat as " + ChatSceneApp.getScenes().get(SceneFlow.CHAT).getNick());
             stage.setScene(ChatSceneApp.getScenes().get(SceneFlow.CHAT).getScene());
         } catch (IOException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

@@ -3,6 +3,8 @@ package com.geekbrains.java2.lesson8.multiscene;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,8 +28,14 @@ public class ChatSceneApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        scenes.put(SceneFlow.LOGIN, new FxmlInfo(LOGIN_FXML, SceneFlow.LOGIN, primaryStage));
-        scenes.put(SceneFlow.CHAT, new FxmlInfo(CHAT_FXML, SceneFlow.CHAT, primaryStage));
+        Socket socket = null;
+        try {
+            socket = new Socket("localhost", 8189);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        scenes.put(SceneFlow.LOGIN, new FxmlInfo(LOGIN_FXML, SceneFlow.LOGIN, primaryStage, socket));
+        scenes.put(SceneFlow.CHAT, new FxmlInfo(CHAT_FXML, SceneFlow.CHAT, primaryStage, socket));
         primaryStage.setScene(scenes.get(SceneFlow.LOGIN).getScene());
         primaryStage.setTitle("Login");
         primaryStage.show();

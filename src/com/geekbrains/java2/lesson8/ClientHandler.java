@@ -47,7 +47,7 @@ public class ClientHandler {
             ex.printStackTrace();
         }
         myServer.unsubscribe(this);
-        myServer.broadcast("User " + name + "left");
+        myServer.broadcast("User " + name + " left", true);
     }
 
     private void readMessages() throws IOException {
@@ -56,12 +56,14 @@ public class ClientHandler {
                 String message = in.readUTF();
                 System.out.println("From " + name + ":" + message);
                 if (message.equals("/end")) {
+                    closeConnection();
                     return;
                 }
                 if (message.startsWith("/w ")) {
                     String[] parts = message.split("\\s");
-                    myServer.sendDirect(parts[1],name+ ": "+ parts[2]);
-                } else myServer.broadcast(name + ": " + message);
+                    String realMessage = message.substring(message.indexOf(" ", message.indexOf(" ") + 1));
+                    myServer.sendDirect(parts[1],name+ ": "+ realMessage);
+                } else myServer.broadcast(name + ": " + message, true);
             }
         }
     }
@@ -78,7 +80,7 @@ public class ClientHandler {
                             System.out.println(nick + " logged into chat");
                             name = nick;
                             sendMsg("/authOk " + nick);
-                            myServer.broadcast(nick + " is in chat");
+                            myServer.broadcast(nick + " is in chat", true);
                             myServer.subscribe(this);
                             return;
                         } else {
